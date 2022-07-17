@@ -7,3 +7,6 @@
 [submodule "Packages/SparkStream"]
 	path = Packages/SparkStream
 	url = https://github.com/HassanRady/SparkStream.git
+[submodule "Tweets-Stream-Dashboard"]
+	path = Tweets-Stream-Dashboard
+	url = https://github.com/HassanRady/Tweets-Stream-Dashboard.git
