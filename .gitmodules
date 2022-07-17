@@ -13,3 +13,6 @@
 [submodule "APIs/Twitter-Handler-Api"]
 	path = APIs/Twitter-Handler-Api
 	url = https://github.com/HassanRady/Twitter-Handler-Api.git
+[submodule "NLP-Services/Keyword-Extraction-Service"]
+	path = NLP-Services/Keyword-Extraction-Service
+	url = https://github.com/HassanRady/Keyword-Extraction-Service.git
