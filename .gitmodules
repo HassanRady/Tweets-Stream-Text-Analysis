@@ -4,3 +4,6 @@
 [submodule "Packages/TwitterHandler"]
 	path = Packages/TwitterHandler
 	url = https://github.com/HassanRady/TwitterHandler.git
+[submodule "Packages/SparkStream"]
+	path = Packages/SparkStream
+	url = https://github.com/HassanRady/SparkStream.git
