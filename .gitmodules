@@ -10,3 +10,6 @@
 [submodule "Tweets-Stream-Dashboard"]
 	path = Tweets-Stream-Dashboard
 	url = https://github.com/HassanRady/Tweets-Stream-Dashboard.git
+[submodule "APIs/Twitter-Handler-Api"]
+	path = APIs/Twitter-Handler-Api
+	url = https://github.com/HassanRady/Twitter-Handler-Api.git
