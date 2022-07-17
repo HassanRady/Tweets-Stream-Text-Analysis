@@ -1,0 +1,3 @@
+[submodule "APIs/Spark-Stream-Api"]
+	path = APIs/Spark-Stream-Api
+	url = https://github.com/HassanRady/Spark-Stream-Api.git
