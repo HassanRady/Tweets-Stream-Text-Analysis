@@ -16,3 +16,6 @@
 [submodule "NLP-Services/Keyword-Extraction-Service"]
 	path = NLP-Services/Keyword-Extraction-Service
 	url = https://github.com/HassanRady/Keyword-Extraction-Service.git
+[submodule "NLP-Services/Named-Entity-Recognition-Service"]
+	path = NLP-Services/Named-Entity-Recognition-Service
+	url = https://github.com/HassanRady/Named-Entity-Recognition-Service.git
