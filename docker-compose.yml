@@ -1,0 +1,103 @@
+version: '3.8'
+
+services:
+  spark-stream-api:
+    container_name: spark-stream-api
+    build: ./APIs/Spark-Stream-Api
+    ports:
+      - "9001:9001"
+    command: uvicorn app:app --host 0.0.0.0 --port 9001
+    volumes:
+      - ./APIs/Spark-Stream-Api:/spark-stream-api
+    environment:
+      KAFKA_HOST: localhost:9092
+      CASSANDRA_HOST: localhost:9042
+    depends_on:
+      - broker
+
+  sentiment-model-service:
+    container_name: sentiment-model-service
+    image: tensorflow/serving
+    ports:
+      - "8501:8501"
+    command:
+      - "serve"
+      - "--rest_api_port=8501"
+      - "--rest_api_timeout=120s"
+      - "--enable_batching=true"
+      - "--model_config_file=/models/sentiment/model.config"
+      - "--allow_version_labels_for_unavailable_models"
+    volumes:
+      - ./Servable_Model/sentiment:/models/sentiment
+    working_dir: /models/sentiment
+
+  emotion-model-service:
+    container_name: emotion-model-service
+    image: tensorflow/serving
+    ports:
+      - "8502:8502"
+    command:
+      - "serve"
+      - "--rest_api_port=8502"
+      - "--rest_api_timeout=120s"
+      - "--enable_batching=true"
+      - "--model_config_file=/models/emotion/model.config"
+      - "--allow_version_labels_for_unavailable_models"
+    volumes:
+      - ./Servable_Model/emotion:/models/emotion
+    working_dir: /models/emotion
+
+  keyword-extraction:
+    container_name: keyword-extraction
+    build: ./NLP/Keyword-Extraction
+    ports:
+      - "9004:9004"
+    command: uvicorn app:app --host 0.0.0.0 --port 9004
+    volumes:
+      - ./NLP/Keyword-Extraction:/keyword-extraction
+
+  named-entity-recognition:
+    container_name: named-entity-recognition
+    build: ./NLP/Named-Entity-Recognition
+    ports:
+      - "9005:9005"
+    command: uvicorn app:app --host 0.0.0.0 --port 9005
+    volumes:
+      - ./NLP/Named-Entity-Recognition:/named-entity-recognition
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.0.1
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  broker:
+    image: confluentinc/cp-kafka:7.0.1
+    container_name: broker
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+
+  cassandra:
+    image: cassandra:4.0.4
+    container_name: cassandra
+    ports:
+      - "9042:9042"
+
+
+
+
+    
+
+    
+
