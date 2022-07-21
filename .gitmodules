@@ -19,3 +19,6 @@
 [submodule "NLP-Services/Named-Entity-Recognition-Service"]
 	path = NLP-Services/Named-Entity-Recognition-Service
 	url = https://github.com/HassanRady/Named-Entity-Recognition-Service.git
+[submodule "APIs/CassandraReader"]
+	path = APIs/CassandraReader
+	url = https://github.com/HassanRady/CassandraReader.git
