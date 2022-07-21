@@ -88,6 +88,11 @@ services:
     command: sh -c "sleeep 60s && uvicorn app:app --host 0.0.0.0 --port 9000"
     volumes:
       - ./APIs/CassandraReader:/cassandra-reader
+    environment:
+      CASSANDRA_HOST: cassandra
+      CASSANDRA_PORT: 9042
+      CASSANDRA_KEYSPACE: twitter
+      CASSANDRA_TABLE: offline_tweets
     depends_on:
       - cassandra
 
