@@ -80,12 +80,21 @@ services:
     volumes:
       - ./NLP/Named-Entity-Recognition:/named-entity-recognition
 
+  cassandra-reader:
+    container_name: cassandra-reader
+    build: ./APIs/CassandraReader
+    ports:
+      - "9000:9000"
+    command: sh -c "sleeep 60s && uvicorn app:app --host 0.0.0.0 --port 9000"
+    volumes:
+      - ./APIs/CassandraReader:/cassandra-reader
+
   twitter-handler-api:
     container_name: twitter-handler-api
     build: ./Twitter-Handler-API
     ports:
-      - "9000:9000"
-    command: uvicorn app:app --host 0.0.0.0 --port 9000
+      - "9001:9001"
+    command: uvicorn app:app --host 0.0.0.0 --port 9001
     volumes:
       - ./Twitter-Handler-API:/twitter-handler-api
     depends_on:
@@ -95,8 +104,8 @@ services:
     container_name: spark-stream-api
     build: ./APIs/Spark-Stream-Api
     ports:
-      - "9001:9001"
-    command: sh -c "sleep 60s && uvicorn app:app --host 0.0.0.0 --port 9001
+      - "9003:9003"
+    command: uvicorn app:app --host 0.0.0.0 --port 9003
     volumes:
       - ./APIs/Spark-Stream-Api:/spark-stream-api
     environment:
@@ -104,6 +113,7 @@ services:
       CASSANDRA_HOST: cassandra:9042
     depends_on:
       - broker
+      - cassandra-reader
 
 
 
