@@ -92,7 +92,8 @@ services:
       CASSANDRA_HOST: cassandra
       CASSANDRA_PORT: 9042
       KEYSPACE: twitter
-      TABLE: offline_tweets
+      OFFLINE_TABLE: offline_tweets
+      ONLINE_TABLE: online_tweets
     depends_on:
       - cassandra
 
@@ -103,7 +104,7 @@ services:
       - "9001:9001"
     command: sh -c "sleep 60s && uvicorn app:app --host 0.0.0.0 --port 9001"
     volumes:
-      - ./Twitter-Handler-API:/twitter-handler-api
+      - ./APIs/Twitter-Handler-Api:/twitter-handler-api
     environment:
       BEARER_TOKEN: AAAAAAAAAAAAAAAAAAAAAH7GdQEAAAAAZiPo%2BAk5%2F1EzjoDgvHbh54cYiXk%3DxsWH6kuQGlUplGeieTz79kMordjKlbD7xFFb1oW0X7EylqqNcS
       KAFKA_HOST: broker
@@ -117,19 +118,16 @@ services:
     build: ./APIs/Spark-Stream-Api
     ports:
       - "9003:9003"
-    command: uvicorn app:app --host 0.0.0.0 --port 9003
+    command: sh -c "sleep 65s && uvicorn app:app --host 0.0.0.0 --port 9003"
     volumes:
       - ./APIs/Spark-Stream-Api:/spark-stream-api
     environment:
       KAFKA_HOST: broker:9092
+      KAFKA_TOPIC: tweets_stream
       CASSANDRA_HOST: cassandra:9042
+      CASSANDRA_KEYSPACE: twitter
+      CASSANDRA_TABLE: online_tweets
     depends_on:
       - broker
       - cassandra-reader
-
-
-
-    
-
-    
 
