@@ -88,10 +88,12 @@ services:
     command: sh -c "sleeep 60s && uvicorn app:app --host 0.0.0.0 --port 9000"
     volumes:
       - ./APIs/CassandraReader:/cassandra-reader
+    depends_on:
+      - cassandra
 
   twitter-handler-api:
     container_name: twitter-handler-api
-    build: ./Twitter-Handler-API
+    build: ./APIs/Twitter-Handler-API
     ports:
       - "9001:9001"
     command: uvicorn app:app --host 0.0.0.0 --port 9001
