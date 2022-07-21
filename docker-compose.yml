@@ -40,10 +40,10 @@ services:
       - "--rest_api_port=8501"
       - "--rest_api_timeout=120s"
       - "--enable_batching=true"
-      - "--model_config_file=/models/sentiment/model.config"
+      - "--model_config_file=model.config"
       - "--allow_version_labels_for_unavailable_models"
     volumes:
-      - ./Servable_Model/sentiment:/models/sentiment
+      - ./Servable-Models/sentiment:/models/sentiment
     working_dir: /models/sentiment
 
   emotion-model-service:
@@ -56,36 +56,36 @@ services:
       - "--rest_api_port=8502"
       - "--rest_api_timeout=120s"
       - "--enable_batching=true"
-      - "--model_config_file=/models/emotion/model.config"
+      - "--model_config_file=model.config"
       - "--allow_version_labels_for_unavailable_models"
     volumes:
-      - ./Servable_Model/emotion:/models/emotion
+      - ./Servable-Models/emotion:/models/emotion
     working_dir: /models/emotion
 
   keyword-extraction:
     container_name: keyword-extraction
-    build: ./NLP/Keyword-Extraction
+    build: ./NLP-Services/Keyword-Extraction-Service
     ports:
       - "9004:9004"
     command: uvicorn app:app --host 0.0.0.0 --port 9004
     volumes:
-      - ./NLP/Keyword-Extraction:/keyword-extraction
+      - ./NLP-Services/Keyword-Extraction-Service:/keyword-extraction
 
   named-entity-recognition:
     container_name: named-entity-recognition
-    build: ./NLP/Named-Entity-Recognition
+    build: ./NLP-Services/Named-Entity-Recognition-Service
     ports:
       - "9005:9005"
     command: uvicorn app:app --host 0.0.0.0 --port 9005
     volumes:
-      - ./NLP/Named-Entity-Recognition:/named-entity-recognition
+      - ./NLP-Services/Named-Entity-Recognition-Service:/named-entity-recognition
 
   cassandra-reader:
     container_name: cassandra-reader
     build: ./APIs/CassandraReader
     ports:
       - "9000:9000"
-    command: sh -c "sleeep 60s && uvicorn app:app --host 0.0.0.0 --port 9000"
+    command: sh -c "sleep 60s && uvicorn app:app --host 0.0.0.0 --port 9000"
     volumes:
       - ./APIs/CassandraReader:/cassandra-reader
     environment:
@@ -98,12 +98,14 @@ services:
 
   twitter-handler-api:
     container_name: twitter-handler-api
-    build: ./APIs/Twitter-Handler-API
+    build: ./APIs/Twitter-Handler-Api
     ports:
       - "9001:9001"
     command: uvicorn app:app --host 0.0.0.0 --port 9001
     volumes:
       - ./Twitter-Handler-API:/twitter-handler-api
+    environment:
+      BEARER_TOKEN: AAAAAAAAAAAAAAAAAAAAAH7GdQEAAAAAZiPo%2BAk5%2F1EzjoDgvHbh54cYiXk%3DxsWH6kuQGlUplGeieTz79kMordjKlbD7xFFb1oW0X7EylqqNcS
     depends_on:
       - broker
   
