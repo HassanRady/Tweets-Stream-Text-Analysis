@@ -1,19 +1,34 @@
 version: '3.8'
 
 services:
-  spark-stream-api:
-    container_name: spark-stream-api
-    build: ./APIs/Spark-Stream-Api
-    ports:
-      - "9001:9001"
-    command: uvicorn app:app --host 0.0.0.0 --port 9001
-    volumes:
-      - ./APIs/Spark-Stream-Api:/spark-stream-api
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.0.1
+    container_name: zookeeper
     environment:
-      KAFKA_HOST: localhost:9092
-      CASSANDRA_HOST: localhost:9042
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  broker:
+    image: confluentinc/cp-kafka:7.0.1
+    container_name: broker
+    ports:
+      - "9092:9092"
     depends_on:
-      - broker
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+
+  cassandra:
+    container_name: cassandra
+    image: cassandra:4.0.4
+    ports:
+      - "9042:9042"
 
   sentiment-model-service:
     container_name: sentiment-model-service
@@ -65,35 +80,30 @@ services:
     volumes:
       - ./NLP/Named-Entity-Recognition:/named-entity-recognition
 
-  zookeeper:
-    image: confluentinc/cp-zookeeper:7.0.1
-    container_name: zookeeper
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-
-  broker:
-    image: confluentinc/cp-kafka:7.0.1
-    container_name: broker
+  twitter-handler-api:
+    container_name: twitter-handler-api
+    build: ./Twitter-Handler-API
     ports:
-      - "9092:9092"
+      - "9000:9000"
+    command: uvicorn app:app --host 0.0.0.0 --port 9000
+    volumes:
+      - ./Twitter-Handler-API:/twitter-handler-api
     depends_on:
-      - zookeeper
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-
-  cassandra:
-    image: cassandra:4.0.4
-    container_name: cassandra
+      - broker
+  
+  spark-stream-api:
+    container_name: spark-stream-api
+    build: ./APIs/Spark-Stream-Api
     ports:
-      - "9042:9042"
-
+      - "9001:9001"
+    command: sh -c "sleep 60s && uvicorn app:app --host 0.0.0.0 --port 9001
+    volumes:
+      - ./APIs/Spark-Stream-Api:/spark-stream-api
+    environment:
+      KAFKA_HOST: broker:9092
+      CASSANDRA_HOST: cassandra:9042
+    depends_on:
+      - broker
 
 
 
