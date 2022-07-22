@@ -30,6 +30,13 @@ services:
     ports:
       - "9042:9042"
 
+  redis:
+    container_name: redis
+    image: redis:7.0
+    ports:
+      - "6379:6379"
+    
+
   # sentiment-model-service:
   #   container_name: sentiment-model-service
   #   image: tensorflow/serving
@@ -80,53 +87,58 @@ services:
   #   volumes:
   #     - ./NLP-Services/Named-Entity-Recognition-Service:/named-entity-recognition
 
-  cassandra-reader:
-    container_name: cassandra-reader
-    build: ./APIs/CassandraReader
-    ports:
-      - "9000:9000"
-    command: sh -c "sleep 120s && uvicorn app:app --host 0.0.0.0 --port 9000"
-    volumes:
-      - ./APIs/CassandraReader:/cassandra-reader
-    environment:
-      CASSANDRA_HOST: cassandra
-      CASSANDRA_PORT: 9042
-      KEYSPACE: twitter
-      OFFLINE_TABLE: offline_tweets
-      ONLINE_TABLE: online_tweets
-    depends_on:
-      - cassandra
+  # cassandra-reader:
+  #   container_name: cassandra-reader
+  #   build: ./APIs/CassandraReader
+  #   ports:
+  #     - "9000:9000"
+  #   command: sh -c "sleep 120s && uvicorn app:app --host 0.0.0.0 --port 9000"
+  #   volumes:
+  #     - ./APIs/CassandraReader:/cassandra-reader
+  #   environment:
+  #     CASSANDRA_HOST: cassandra
+  #     CASSANDRA_PORT: 9042
+  #     KEYSPACE: twitter
+  #     OFFLINE_TABLE: offline_tweets
+  #     ONLINE_TABLE: online_tweets
+  #   depends_on:
+  #     - cassandra
 
-  twitter-handler-api:
-    container_name: twitter-handler-api
-    build: ./APIs/Twitter-Handler-Api
-    ports:
-      - "9001:9001"
-    command: sh -c "sleep 20s && uvicorn app:app --host 0.0.0.0 --port 9001"
-    volumes:
-      - ./APIs/Twitter-Handler-Api:/twitter-handler-api
-    environment:
-      KAFKA_HOST: broker
-      KAFKA_PORT: 29092
-      KAFKA_TOPIC: tweets_stream
-    depends_on:
-      - broker
+  # twitter-handler-api:
+  #   container_name: twitter-handler-api
+  #   build: ./APIs/Twitter-Handler-Api
+  #   ports:
+  #     - "9001:9001"
+  #   command: sh -c "sleep 20s && uvicorn app:app --host 0.0.0.0 --port 9001"
+  #   volumes:
+  #     - ./APIs/Twitter-Handler-Api:/twitter-handler-api
+  #   environment:
+  #     KAFKA_HOST: broker
+  #     KAFKA_PORT: 29092
+  #     KAFKA_TOPIC: tweets_stream
+  #   depends_on:
+  #     - broker
   
-  spark-stream-api:
-    container_name: spark-stream-api
-    build: ./APIs/Spark-Stream-Api
-    ports:
-      - "9003:9003"
-    command: sh -c "sleep 125s && uvicorn app:app --host 0.0.0.0 --port 9003"
-    volumes:
-      - ./APIs/Spark-Stream-Api:/spark-stream-api
-    environment:
-      KAFKA_HOST: broker:29092
-      KAFKA_TOPIC: tweets_stream
-      CASSANDRA_HOST: cassandra:9042
-      CASSANDRA_KEYSPACE: twitter
-      CASSANDRA_TABLE: online_tweets
-    depends_on:
-      - broker
-      - cassandra-reader
+  # spark-stream-api:
+  #   container_name: spark-stream-api
+  #   build: ./APIs/Spark-Stream-Api
+  #   ports:
+  #     - "9003:9003"
+  #   command: sh -c "sleep 125s && uvicorn app:app --host 0.0.0.0 --port 9003"
+  #   volumes:
+  #     - ./APIs/Spark-Stream-Api:/spark-stream-api
+  #   environment:
+  #     KAFKA_HOST: broker:29092
+  #     KAFKA_TOPIC: tweets_stream
+  #     CASSANDRA_HOST: cassandra:9042
+  #     CASSANDRA_KEYSPACE: twitter
+  #     CASSANDRA_TABLE: online_tweets
+  #     REDIS_HOST: redis
+  #     REDIS_PORT: 6379
+  #     REDIS_TABLE: online_tweets
+  #   depends_on:
+  #     - broker
+  #     - cassandra
+  #     - redis
+      # - cassandra-reader
 
