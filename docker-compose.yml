@@ -35,110 +35,155 @@ services:
     image: redis:7.0
     ports:
       - "6379:6379"
-    
 
-  # sentiment-model-service:
-  #   container_name: sentiment-model-service
-  #   image: tensorflow/serving
-  #   ports:
-  #     - "8501:8501"
-  #   command:
-  #     - "serve"
-  #     - "--rest_api_port=8501"
-  #     - "--rest_api_timeout=120s"
-  #     - "--enable_batching=true"
-  #     - "--model_config_file=model.config"
-  #     - "--allow_version_labels_for_unavailable_models"
-  #   volumes:
-  #     - ./Servable-Models/sentiment:/models/sentiment
-  #   working_dir: /models/sentiment
+  sentiment-model-service:
+    container_name: sentiment-model-service
+    image: tensorflow/serving
+    ports:
+      - "8501:8501"
+    command:
+      - "serve"
+      - "--rest_api_port=8501"
+      - "--rest_api_timeout=120s"
+      - "--enable_batching=true"
+      - "--model_config_file=model.config"
+      - "--allow_version_labels_for_unavailable_models"
+    volumes:
+      - ./Servable-Models/sentiment:/models/sentiment
+    working_dir: /models/sentiment
 
-  # emotion-model-service:
-  #   container_name: emotion-model-service
-  #   image: tensorflow/serving
-  #   ports:
-  #     - "8502:8502"
-  #   command:
-  #     - "serve"
-  #     - "--rest_api_port=8502"
-  #     - "--rest_api_timeout=120s"
-  #     - "--enable_batching=true"
-  #     - "--model_config_file=model.config"
-  #     - "--allow_version_labels_for_unavailable_models"
-  #   volumes:
-  #     - ./Servable-Models/emotion:/models/emotion
-  #   working_dir: /models/emotion
+  emotion-model-service:
+    container_name: emotion-model-service
+    image: tensorflow/serving
+    ports:
+      - "8502:8502"
+    command:
+      - "serve"
+      - "--rest_api_port=8502"
+      - "--rest_api_timeout=120s"
+      - "--enable_batching=true"
+      - "--model_config_file=model.config"
+      - "--allow_version_labels_for_unavailable_models"
+    volumes:
+      - ./Servable-Models/emotion:/models/emotion
+    working_dir: /models/emotion
 
-  # keyword-extraction:
-  #   container_name: keyword-extraction
-  #   build: ./NLP-Services/Keyword-Extraction-Service
-  #   ports:
-  #     - "9004:9004"
-  #   command: uvicorn app:app --host 0.0.0.0 --port 9004
-  #   volumes:
-  #     - ./NLP-Services/Keyword-Extraction-Service:/keyword-extraction
+  keyword-extraction-service:
+    container_name: keyword-extraction
+    build: ./NLP-Services/Keyword-Extraction-Service
+    ports:
+      - "9004:9004"
+    command: uvicorn app:app --host 0.0.0.0 --port 9004
+    volumes:
+      - ./NLP-Services/Keyword-Extraction-Service:/keyword-extraction
 
-  # named-entity-recognition:
-  #   container_name: named-entity-recognition
-  #   build: ./NLP-Services/Named-Entity-Recognition-Service
-  #   ports:
-  #     - "9005:9005"
-  #   command: uvicorn app:app --host 0.0.0.0 --port 9005
-  #   volumes:
-  #     - ./NLP-Services/Named-Entity-Recognition-Service:/named-entity-recognition
+  named-entity-recognition-service:
+    container_name: named-entity-recognition
+    build: ./NLP-Services/Named-Entity-Recognition-Service
+    ports:
+      - "9005:9005"
+    command: uvicorn app:app --host 0.0.0.0 --port 9005
+    volumes:
+      - ./NLP-Services/Named-Entity-Recognition-Service:/named-entity-recognition
 
-  # cassandra-reader:
-  #   container_name: cassandra-reader
-  #   build: ./APIs/CassandraReader
-  #   ports:
-  #     - "9000:9000"
-  #   command: sh -c "sleep 120s && uvicorn app:app --host 0.0.0.0 --port 9000"
-  #   volumes:
-  #     - ./APIs/CassandraReader:/cassandra-reader
-  #   environment:
-  #     CASSANDRA_HOST: cassandra
-  #     CASSANDRA_PORT: 9042
-  #     KEYSPACE: twitter
-  #     OFFLINE_TABLE: offline_tweets
-  #     ONLINE_TABLE: online_tweets
-  #   depends_on:
-  #     - cassandra
+  trending-hashtags:
+    container_name: trending-hashtags-service
+    build: ./APIs/twitter-trending-hashtags
+    ports:
+      - "9002:9002"
+    command: uvicorn app:app --host 0.0.0.0 --port 9002
+    volumes:
+      - ./APIs/twitter-trending-hashtags:/trending-hashtags
 
-  # twitter-handler-api:
-  #   container_name: twitter-handler-api
-  #   build: ./APIs/Twitter-Handler-Api
-  #   ports:
-  #     - "9001:9001"
-  #   command: sh -c "sleep 20s && uvicorn app:app --host 0.0.0.0 --port 9001"
-  #   volumes:
-  #     - ./APIs/Twitter-Handler-Api:/twitter-handler-api
-  #   environment:
-  #     KAFKA_HOST: broker
-  #     KAFKA_PORT: 29092
-  #     KAFKA_TOPIC: tweets_stream
-  #   depends_on:
-  #     - broker
-  
-  # spark-stream-api:
-  #   container_name: spark-stream-api
-  #   build: ./APIs/Spark-Stream-Api
-  #   ports:
-  #     - "9003:9003"
-  #   command: sh -c "sleep 125s && uvicorn app:app --host 0.0.0.0 --port 9003"
-  #   volumes:
-  #     - ./APIs/Spark-Stream-Api:/spark-stream-api
-  #   environment:
-  #     KAFKA_HOST: broker:29092
-  #     KAFKA_TOPIC: tweets_stream
-  #     CASSANDRA_HOST: cassandra:9042
-  #     CASSANDRA_KEYSPACE: twitter
-  #     CASSANDRA_TABLE: online_tweets
-  #     REDIS_HOST: redis
-  #     REDIS_PORT: 6379
-  #     REDIS_TABLE: online_tweets
-  #   depends_on:
-  #     - broker
-  #     - cassandra
-  #     - redis
-      # - cassandra-reader
+  cassandra-reader:
+    container_name: cassandra-reader
+    build: ./APIs/CassandraReader
+    ports:
+      - "9000:9000"
+    command: sh -c "sleep 120s && uvicorn app:app --host 0.0.0.0 --port 9000"
+    volumes:
+      - ./APIs/CassandraReader:/cassandra-reader
+    environment:
+      CASSANDRA_HOST: cassandra
+      CASSANDRA_PORT: 9042
+      KEYSPACE: twitter
+      OFFLINE_TABLE: offline_tweets
+      ONLINE_TABLE: online_tweets
+    depends_on:
+      - cassandra
 
+  twitter-handler-api:
+    container_name: twitter-handler-api
+    build: ./APIs/Twitter-Handler-Api
+    ports:
+      - "9001:9001"
+    command: sh -c "sleep 20s && uvicorn app:app --host 0.0.0.0 --port 9001"
+    volumes:
+      - ./APIs/Twitter-Handler-Api:/twitter-handler-api
+    environment:
+      KAFKA_HOST: broker
+      KAFKA_PORT: 29092
+      KAFKA_TOPIC: tweets_stream
+    depends_on:
+      - broker
+
+  spark-stream-api:
+    container_name: spark-stream-api
+    build: ./APIs/Spark-Stream-Api
+    ports:
+      - "9003:9003"
+    command: sh -c "sleep 125s && uvicorn app:app --host 0.0.0.0 --port 9003"
+    volumes:
+      - ./APIs/Spark-Stream-Api:/spark-stream-api
+    environment:
+      KAFKA_HOST: broker:29092
+      KAFKA_TOPIC: tweets_stream
+      CASSANDRA_HOST: cassandra:9042
+      CASSANDRA_KEYSPACE: twitter
+      CASSANDRA_TABLE: online_tweets
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_TABLE: online_tweets
+    depends_on:
+      - broker
+      - cassandra
+      - redis
+      - cassandra-reader
+
+  dashboard:
+    container_name: dashboard
+    build: ./Tweets-Stream-Dashboard
+    ports:
+      - "7020:7020"
+    command: sh -c "sleep 140s && uvicorn app:app --host 0.0.0.0 --port 7020"
+    volumes:
+      - ./Tweets-Stream-Dashboard:/dashboard
+    environment:
+      CASSANDRA_READER_HOST: cassandra-reader
+      CASSANDRA_READER_PORT: 9000
+      TWITTER_HANDLER_API_HOST: twitter-handler-api
+      TWITTER_HANDLER_API_PORT: 9001
+      SPARK_STREAM_API_HOST: spark-stream-api
+      SPARK_STREAM_API_PORT: 9003
+      KEYWORD_EXTRACTION_HOST: keyword-extraction
+      KEYWORD_EXTRACTION_PORT: 9004
+      NAMED_ENTITY_RECOGNITION_HOST: named-entity-recognition
+      NAMED_ENTITY_RECOGNITION_PORT: 9005
+      TRENDING_HASHTAGS_HOST: trending-hashtags-service
+      TRENDING_HASHTAGS_PORT: 9002
+      SENTIMENT_MODEL_SERVICE_HOST: sentiment-model-service
+      SENTIMENT_MODEL_SERVICE_PORT: 8501
+      EMOTION_MODEL_SERVICE_HOST: emotion-model-service
+      EMOTION_MODEL_SERVICE_PORT: 8502
+    depends_on:
+      - spark-stream-api
+      - twitter-handler-api
+      - trending-hashtags
+      - named-entity-recognition-service
+      - emotion-model-service
+      - sentiment-model-service
+      - keyword-extraction-service
+      - cassandra-reader
+      - cassandra
+      - redis
+      - broker
