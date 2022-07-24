@@ -86,7 +86,7 @@ services:
     volumes:
       - ./NLP-Services/Named-Entity-Recognition-Service:/named-entity-recognition
 
-  trending-hashtags:
+  trending-hashtags-service:
     container_name: trending-hashtags-service
     build: ./APIs/twitter-trending-hashtags
     ports:
@@ -165,12 +165,12 @@ services:
       TWITTER_HANDLER_API_PORT: 9001
       SPARK_STREAM_API_HOST: spark-stream-api
       SPARK_STREAM_API_PORT: 9003
-      KEYWORD_EXTRACTION_HOST: keyword-extraction
-      KEYWORD_EXTRACTION_PORT: 9004
-      NAMED_ENTITY_RECOGNITION_HOST: named-entity-recognition
-      NAMED_ENTITY_RECOGNITION_PORT: 9005
-      TRENDING_HASHTAGS_HOST: trending-hashtags-service
-      TRENDING_HASHTAGS_PORT: 9002
+      KEYWORD_EXTRACTION_SERVICE_HOST: keyword-extraction
+      KEYWORD_EXTRACTION_SERVICE_PORT: 9004
+      NAMED_ENTITY_RECOGNITION_SERVICE_HOST: named-entity-recognition
+      NAMED_ENTITY_RECOGNITION_SERVICE_PORT: 9005
+      TRENDING_HASHTAGS_SERVICE_HOST: trending-hashtags-service
+      TRENDING_HASHTAGS_SERVICE_PORT: 9002
       SENTIMENT_MODEL_SERVICE_HOST: sentiment-model-service
       SENTIMENT_MODEL_SERVICE_PORT: 8501
       EMOTION_MODEL_SERVICE_HOST: emotion-model-service
@@ -178,7 +178,7 @@ services:
     depends_on:
       - spark-stream-api
       - twitter-handler-api
-      - trending-hashtags
+      - trending-hashtags-service
       - named-entity-recognition-service
       - emotion-model-service
       - sentiment-model-service
