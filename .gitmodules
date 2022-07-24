@@ -22,3 +22,6 @@
 [submodule "APIs/CassandraReader"]
 	path = APIs/CassandraReader
 	url = https://github.com/HassanRady/CassandraReader.git
+[submodule "APIs/twitter-trending-hashtags"]
+	path = APIs/twitter-trending-hashtags
+	url = https://github.com/HassanRady/twitter-trending-hashtags.git
