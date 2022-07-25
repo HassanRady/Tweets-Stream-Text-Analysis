@@ -155,7 +155,7 @@ services:
     build: ./Tweets-Stream-Dashboard
     ports:
       - "7020:7020"
-    command: sh -c "sleep 140s && uvicorn app:app --host 0.0.0.0 --port 7020"
+    command: sh -c "sleep 150s && python3 app.py"
     volumes:
       - ./Tweets-Stream-Dashboard:/dashboard
     environment:
@@ -175,6 +175,8 @@ services:
       SENTIMENT_MODEL_SERVICE_PORT: 8501
       EMOTION_MODEL_SERVICE_HOST: emotion-model-service
       EMOTION_MODEL_SERVICE_PORT: 8502
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
     depends_on:
       - spark-stream-api
       - twitter-handler-api
