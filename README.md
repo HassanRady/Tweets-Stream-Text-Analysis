@@ -45,6 +45,7 @@ Implemented Lambda Architecture to handle the streaming of twitter's data ingest
 * Spacy
 * NLTK
 * Yake
+* Docker
 
 **Data:**
 <br>
