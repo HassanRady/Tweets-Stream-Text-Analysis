@@ -25,3 +25,9 @@
 [submodule "APIs/twitter-trending-hashtags"]
 	path = APIs/twitter-trending-hashtags
 	url = https://github.com/HassanRady/twitter-trending-hashtags.git
+[submodule "TF-Models/Emotion-Text-Detection"]
+	path = TF-Models/Emotion-Text-Detection
+	url = https://github.com/HassanRady/Emotion-Text-Detection.git
+[submodule "TF-Models/Text-Sentiment-Analysis"]
+	path = TF-Models/Text-Sentiment-Analysis
+	url = https://github.com/HassanRady/Text-Sentiment-Analysis.git
