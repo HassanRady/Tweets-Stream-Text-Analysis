@@ -45,7 +45,7 @@ services:
       - "serve"
       - "--rest_api_port=8501"
       - "--rest_api_timeout=120s"
-      - "--enable_batching=true"
+      # - "--enable_batching=true"
       - "--model_config_file=model.config"
       - "--allow_version_labels_for_unavailable_models"
     volumes:
@@ -61,7 +61,7 @@ services:
       - "serve"
       - "--rest_api_port=8502"
       - "--rest_api_timeout=120s"
-      - "--enable_batching=true"
+      # - "--enable_batching=true"
       - "--model_config_file=model.config"
       - "--allow_version_labels_for_unavailable_models"
     volumes:
@@ -155,7 +155,7 @@ services:
     build: ./Tweets-Stream-Dashboard
     ports:
       - "7020:7020"
-    command: sh -c "sleep 150s && python3 app.py"
+    command: sh -c "sleep 180s && python3 app.py"
     volumes:
       - ./Tweets-Stream-Dashboard:/dashboard
     environment:

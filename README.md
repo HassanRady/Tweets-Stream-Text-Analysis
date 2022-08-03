@@ -4,7 +4,7 @@
 It is a real-time tweets text analysis dashboard.
 
 ## Idea
-To be able to keep up with trending hashtags and topics, a dashboard is used to get keywords, entities, tweets' sentiment, tweets' emotions, and frequent words of a given hashtag/topic.
+To be able to keep up with trending hashtags and topics, a dashboard is used to get keywords, entities, tweets' sentiment, tweets' emotions, and frequent words from a given hashtag/topic.
 ## Architecture
 
 <img src="assets/arhitecture.png" />
