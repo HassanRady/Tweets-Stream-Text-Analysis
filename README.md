@@ -1,6 +1,7 @@
 # Streaming Microservice Architecture
 
  file:///media/hassan/Work/Big%20Projects/Tweets-Stream-Text-Analysis/assets/demo.mp4
+ 
 ## What is it?
 It is a real-time tweets text analysis dashboard.
 
