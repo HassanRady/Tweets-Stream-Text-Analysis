@@ -14,20 +14,23 @@ Implemented Lambda Architecture to handle the streaming of twitter's data ingest
 
 **Microservices:**
 
-- TwitterHandler is a python package (<a href="">TwitterHandler-pypi</a>) it handles twitter' data stream from twitter api v2 and ingest it into Kafka. Accessible via an API and deployed in a docker container. <a href=""> TwitterHandler-github</a>
+- TwitterHandler is a python package (<a href="https://pypi.org/project/TwitterHandler/">TwitterHandler-pypi</a>) it handles twitter' data stream from twitter api v2 and ingest it into Kafka. Accessible via an API and deployed in a docker container. <a href="https://github.com/HassanRady/Twitter-Handler-Api"> TwitterHandler-github</a>
 
-- SparkStream is a python package (<a href="">SparkStream-pypi</a>). A simple spark streaming handler; it listens to a kafka topic, process the data, and store it into cassandra and redis. Accessible via an API and deployed in a docker container. <a href=""> SparkStream-github</a>
+- SparkStream is a python package (<a href="https://pypi.org/project/SparkStream/#description">SparkStream-pypi</a>). A simple spark streaming handler; it listens to a kafka topic, process the data, and store it into cassandra and redis. Accessible via an API and deployed in a docker container. <a href="https://github.com/HassanRady/Spark-Stream-Api"> SparkStream-github</a>
 
- - Named-Entity-Recognition is a service for extracting NERs from text by spacy. Accessible via an API and deployed in a docker container. <a href=""> NER-github</a>
+ - Named-Entity-Recognition is a service for extracting NERs from text by spacy. Accessible via an API and deployed in a docker container. <a href="https://github.com/HassanRady/Named-Entity-Recognition-Service"> NER-github</a>
 
  - Keyword-Extraction is a service for extracting keywords from text by yake. Accessible via an API and deployed in a docker container. <a href=""> Keyword-github</a>
 
- - Sentiment-Model is a service for predicting tweet's sentiment. Developed by tensorflow extended and deployed with tensorflow-serving. <a href=""> Sentiment-github</a>
+ - Sentiment-Model is a service for predicting tweet's sentiment. Developed by tensorflow extended and deployed with tensorflow-serving. <a href="https://github.com/HassanRady/Text-Sentiment-Analysis"> Sentiment-github</a>
 
- - Emotion-Model is a service for predicting tweet's emotions. Developed by tensorflow extended and deployed with tensorflow-serving. <a href=""> Emotion-github</a>
+ - Emotion-Model is a service for predicting tweet's emotions. Developed by tensorflow extended and deployed with tensorflow-serving. <a href="https://github.com/HassanRady/Emotion-Text-Detection"> Emotion-github</a>
 
- - Trending-Hashtags is a service for getting trending hashtags in a given country from twitter api v1. Accessible via an API and deployed in a docker container. <a href=""> Trending-github</a>
+ - Trending-Hashtags is a service for getting trending hashtags in a given country from twitter api v1. Accessible via an API and deployed in a docker container. <a href="https://github.com/HassanRady/twitter-trending-hashtags"> Trending-github</a>
 
+- Dashboard GUI for graphs and text analysis by Dash. <a href="https://github.com/HassanRady/Tweets-Stream-Dashboard">Dashboard-github</a>
+
+- Cassandra Reader is service for reading offline data from cassandra's table.<a href="https://github.com/HassanRady/CassandraReader">cassandraReader-github</a>
 
 
 <br>
