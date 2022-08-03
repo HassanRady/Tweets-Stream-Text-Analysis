@@ -1,4 +1,5 @@
 # Streaming Microservice Architecture
+<video src="assets/demo.mp4">
 
  
 ## What is it?
