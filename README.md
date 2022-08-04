@@ -1,7 +1,11 @@
 # Streaming Microservice Architecture
-<video src="assets/demo.mp4" width=680><>
 
- 
+
+ <!-- [![IMAGE ALT TEXT](assets/mq2.jpg)](https://www.youtube.com/watch?v=KGTCrNkgi54 "Video Title") -->
+
+<video src="assets/demo.mp4" controls="controls" style="max-width: 730px;">
+</video>
+
 ## What is it?
 It is a real-time tweets text analysis dashboard.
 
