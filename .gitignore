@@ -199,4 +199,6 @@ test2.py
 .vscode/
 *.csv
 
-Servable-Models/
+# Servable-Models/
+saved_models/*
+saved_models

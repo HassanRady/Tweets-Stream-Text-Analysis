@@ -1,0 +1,1 @@
+tensorflow_model_server --rest_api_port=8501 --model_config_file=/models/tweet-sentiment/model.config --allow_version_labels_for_unavailable_models --enable_batching --batching_parameters_file=/models/tweet-sentiment/batch.config --file_system_poll_wait_seconds=0

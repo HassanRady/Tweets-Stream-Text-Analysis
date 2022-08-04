@@ -64,3 +64,9 @@ Implemented Lambda Architecture to handle the streaming of twitter's data ingest
 <br>
 - Trending hashtags are from the trend places endpoint of the Twitter API v1.
 - Twitter's streaming data are from the filtered stream endpoint of the Twitter API v2.
+
+
+## Run:
+```sh
+$ docker compose up --build
+```
