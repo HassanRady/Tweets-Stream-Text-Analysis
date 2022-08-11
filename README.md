@@ -67,7 +67,7 @@ Implemented Lambda Architecture to handle the streaming of twitter's data ingest
 
 
 ## Run:
-You need first to add the sentiment and emotion saved models to the saved_models directory versioned in number.
+You need first to add the sentiment and emotion saved models to the <a href="https://github.com/HassanRady/Tweets-Stream-Text-Analysis/tree/main/Servable-Models/sentiment/saved_models"> saved_models</a> in sentiment model directory and in <a href="https://github.com/HassanRady/Tweets-Stream-Text-Analysis/tree/main/Servable-Models/emotion/saved_models">  emotion </a> versioned in number.
 
 ```sh
 $ docker compose up --build
