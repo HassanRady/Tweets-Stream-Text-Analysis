@@ -200,5 +200,5 @@ test2.py
 *.csv
 
 # Servable-Models/
-saved_models/*
-saved_models
+# saved_models/*
+# saved_models

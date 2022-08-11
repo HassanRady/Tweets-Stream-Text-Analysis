@@ -67,6 +67,10 @@ Implemented Lambda Architecture to handle the streaming of twitter's data ingest
 
 
 ## Run:
+You need first to add the sentiment and emotion saved models to the saved_models directory versioned in number.
+
 ```sh
 $ docker compose up --build
 ```
+
+dashboard: 0.0.0.0:7020
