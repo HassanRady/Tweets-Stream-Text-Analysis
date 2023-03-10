@@ -17,7 +17,7 @@ It is a real-time tweets text analysis dashboard.
 To be able to keep up with trending hashtags and topics, a dashboard is used to get keywords, entities, tweets' sentiment, tweets' emotions, and frequent words from a given hashtag/topic.
 ## Architecture
 
-<img src="assets/arhitecture.png" />
+<img src="assets/architecture.png" />
 Implemented Lambda Architecture to handle the streaming of twitter's data ingested by Kafka, then to Spark to be processed, then stored in Cassandra as the batch storage, and to Redis as the speed layer to be analyzed in Dash. Each component is its own microservice. 
 <br>
 <br>
